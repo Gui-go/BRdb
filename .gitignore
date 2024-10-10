@@ -1,9 +1,14 @@
 
 
+
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
 .terraform
 
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
 
-
+data
