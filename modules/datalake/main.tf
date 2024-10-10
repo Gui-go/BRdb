@@ -4,10 +4,10 @@ resource "google_storage_bucket" "tfgcprawbucket" {
   project       = var.proj_id
   location      = var.location
   storage_class = "COLDLINE" # NEARLINE COLDLINE ARCHIVE
-  logging {
-    log_bucket        = google_storage_bucket.logging_bucket.name
-    log_object_prefix = "logs/"
-  }
+  # logging {
+  #   log_bucket        = google_storage_bucket.tfgcplogbucket.name
+  #   log_object_prefix = "logs/"
+  # }
   labels = {
     environment = var.svc_name
     project     = var.proj_id
@@ -20,10 +20,10 @@ resource "google_storage_bucket" "tfgcpcleanbucket" {
   project       = var.proj_id
   location      = var.location
   storage_class = "STANDARD"
-  logging {
-    log_bucket        = google_storage_bucket.logging_bucket.name
-    log_object_prefix = "logs/"
-  }
+  # logging {
+  #   log_bucket        = google_storage_bucket.tfgcplogbucket.name
+  #   log_object_prefix = "logs/"
+  # }
   labels = {
     environment = var.svc_name
     project     = var.proj_id
@@ -31,7 +31,7 @@ resource "google_storage_bucket" "tfgcpcleanbucket" {
   }
 }
 
-resource "google_storage_bucket" "logging_bucket" {
+resource "google_storage_bucket" "tfgcplogbucket" {
   name          = "${var.svc_name}-logbucket"
   project       = var.proj_id
   location      = var.location

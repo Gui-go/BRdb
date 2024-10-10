@@ -37,3 +37,9 @@ variable "network_name" {
   description = "Output from network module"
   type        = string
 }
+
+variable "cleanbucket_name" {
+  description = "Name of the Cloud Storage Clean Bucket"
+  type        = string
+}
+

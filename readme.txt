@@ -128,3 +128,11 @@ git config --global user.name "Gui-go"
 git clone git@github.com:Gui-go/BRdb.git ~/Documents/08-bRcompute/BRdb/
 git config --global --add safe.directory ~/Documents/08-bRcompute/BRdb
 
+gsutil cp https://storage.cloud.google.com/brcompute-rawbucket/tabela202.csv?authuser=1 /tabela202.txt
+gsutil cp gs://storage.cloud.google.com/brcompute-rawbucket/tabela202.csv?authuser=1 /tabela202.txt
+sudo gsutil cp gs://brcompute-rawbucket/tabela202.csv /tabela202.txt
+sudo gsutil -m cp -r gs://brcompute-rawbucket/ /
+
+gsutil -m cp -r gs://example-bucket-name/folder-on-gcs /destination-folder-on-vm/
+
+gs://brcompute-rawbucket/tabela202.csv

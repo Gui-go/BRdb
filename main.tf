@@ -5,7 +5,6 @@ locals {
   location     = "us-central1"
   zone         = "us-central1-a"
   machine_type = "e2-small"
-  bucket_name  = "thesis4geotech2bucket1-cleanbucket"
   tag_owner    = "guilhermeviegas"
 }
 
@@ -29,19 +28,15 @@ module "datalake" {
 }
 
 module "compute" {
-  source       = "./modules/compute"
-  proj_name    = local.proj_name
-  proj_id      = local.proj_id
-  svc_name     = local.svc_name
-  location     = local.location
-  zone         = local.zone
-  machine_type = local.machine_type
-  tag_owner    = local.tag_owner
-  network_name = module.network.vpc_network_name
-}
-
-
-output "ready" {
-  value = "bRcompute build complete!"
+  source           = "./modules/compute"
+  proj_name        = local.proj_name
+  proj_id          = local.proj_id
+  svc_name         = local.svc_name
+  location         = local.location
+  zone             = local.zone
+  machine_type     = local.machine_type
+  tag_owner        = local.tag_owner
+  network_name     = module.network.vpc_network_name
+  cleanbucket_name = module.datalake.output_brcomputetfgcpcleanbucket_name
 }
 
