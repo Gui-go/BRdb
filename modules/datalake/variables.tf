@@ -8,11 +8,6 @@ variable "proj_id" {
   type        = string
 }
 
-variable "svc_name" {
-  description = "Service identifier"
-  type        = string
-}
-
 variable "location" {
   description = "Location of the resources"
   type        = string

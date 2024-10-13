@@ -1,6 +1,6 @@
 
 resource "google_storage_bucket" "tfgcprawbucket" {
-  name          = "${var.svc_name}-rawbucket"
+  name          = "${var.proj_name}-rawbucket"
   project       = var.proj_id
   location      = var.location
   storage_class = "COLDLINE" # NEARLINE COLDLINE ARCHIVE
@@ -9,14 +9,14 @@ resource "google_storage_bucket" "tfgcprawbucket" {
   #   log_object_prefix = "logs/"
   # }
   labels = {
-    environment = var.svc_name
+    environment = var.proj_name
     project     = var.proj_id
     owner       = var.tag_owner
   }
 }
 
 resource "google_storage_bucket" "tfgcpcleanbucket" {
-  name          = "${var.svc_name}-cleanbucket"
+  name          = "${var.proj_name}-cleanbucket"
   project       = var.proj_id
   location      = var.location
   storage_class = "STANDARD"
@@ -25,19 +25,19 @@ resource "google_storage_bucket" "tfgcpcleanbucket" {
   #   log_object_prefix = "logs/"
   # }
   labels = {
-    environment = var.svc_name
+    environment = var.proj_name
     project     = var.proj_id
     owner       = var.tag_owner
   }
 }
 
 resource "google_storage_bucket" "tfgcplogbucket" {
-  name          = "${var.svc_name}-logbucket"
+  name          = "${var.proj_name}-logbucket"
   project       = var.proj_id
   location      = var.location
   storage_class = "STANDARD"
   labels = {
-    environment = var.svc_name
+    environment = var.proj_name
     project     = var.proj_id
     owner       = var.tag_owner
   }

@@ -43,3 +43,17 @@ variable "cleanbucket_name" {
   type        = string
 }
 
+variable "gpu_enabled" {
+  description = "Whether to enable GPU"
+  type        = bool
+  default     = false
+}
+
+variable "gpu_type" {
+  description = "Which GPU to use"
+  type        = string
+  default     = "nvidia-tesla-t4"
+}
+
+
+
