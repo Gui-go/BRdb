@@ -4,8 +4,6 @@
 library(dplyr)
 library(ggplot2)
 
-library(dplyr)
-library(readr)
 
 df_emig <- readr::read_tsv("clean_bucket/tabela3173_emig_micro.tsv") %>%
   # Rename columns
