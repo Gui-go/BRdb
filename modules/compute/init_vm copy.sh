@@ -14,7 +14,7 @@ sudo docker run -d \
     --name rstudio \
     -e ROOT=true \
     -e USER=rstudio \
-    -e PASSWORD=$1 \
+    -e PASSWORD=${data.google_secret_manager_secret_version.brcomputetfgcpsecretrpw.secret_data} \
     rocker/geospatial
 
 sleep 5
@@ -25,7 +25,7 @@ sudo docker exec -t rstudio bash -c '
     sudo apt install tree -y
 
     mkdir -p ~/.ssh
-    echo -e "$2" > ~/.ssh/id_rsa
+    echo -e "${data.google_secret_manager_secret_version.brcomputetfgcpsecretgitprivsshk.secret_data}" > ~/.ssh/id_rsa
     chmod 600 ~/.ssh/id_rsa
 
     touch /.ssh/known_hosts
@@ -43,7 +43,7 @@ sudo docker exec -t rstudio bash -c '
 '
 
 mkdir -p /home/guilhermeviegas1993/clean_data
-sudo gsutil -m cp -r gs://"$3"/* /home/guilhermeviegas1993/clean_data/
+sudo gsutil -m cp -r gs://${var.cleanbucket_name}/* /home/guilhermeviegas1993/clean_data/
       
 sudo docker cp /home/guilhermeviegas1993/clean_data/. rstudio:/home/rstudio/clean_bucket/
       

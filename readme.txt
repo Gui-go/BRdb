@@ -136,3 +136,12 @@ sudo gsutil -m cp -r gs://brcompute-rawbucket/ /
 gsutil -m cp -r gs://example-bucket-name/folder-on-gcs /destination-folder-on-vm/
 
 gs://brcompute-rawbucket/tabela202.csv
+
+gcloud compute ssh brcompute-vm --zone us-central1-a
+
+gcloud compute ssh computeinstance-vm1 --zone us-central1-c
+
+gcloud compute regions list
+
+
+

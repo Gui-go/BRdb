@@ -9,7 +9,7 @@ resource "google_storage_bucket" "tfgcprawbucket" {
   #   log_object_prefix = "logs/"
   # }
   labels = {
-    environment = var.proj_name
+    environment = "varproj_name"
     project     = var.proj_id
     owner       = var.tag_owner
   }
