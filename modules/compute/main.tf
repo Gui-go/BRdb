@@ -16,10 +16,16 @@ resource "google_compute_instance" "brcomputetfgcpvm" {
   allow_stopping_for_update = true
   boot_disk {
     initialize_params {
-    #   image = "projects/YOUR_PROJECT_ID/global/images/YOUR_IMAGE_NAME"
-    image = "ubuntu-2204-jammy-v20240927"
+      #   image = "projects/YOUR_PROJECT_ID/global/images/YOUR_IMAGE_NAME"
+      image = "ubuntu-2204-jammy-v20240927"
+      size  = 200
+      type  = "pd-ssd"
     }
   }
+  # attached_disk {
+  #   source      = google_compute_disk.brcomputetfgcpdisk.id
+  #   device_name = "additional-disk-${var.svc_name}"
+  # }
   network_interface {
     network = var.network_name
     access_config {
@@ -59,7 +65,7 @@ resource "google_compute_instance" "brcomputetfgcpvm" {
         --user root \
         rocker/geospatial
 
-      sleep 5
+      sleep 2
 
       sudo docker exec -t rstudio bash -c '
 
@@ -87,6 +93,7 @@ resource "google_compute_instance" "brcomputetfgcpvm" {
       '
 
       mkdir -p /home/guilhermeviegas1993/clean_data
+      sudo chmod -R 777 /home/guilhermeviegas1993/clean_data
       sudo gsutil -m cp -r gs://${var.cleanbucket_name}/* /home/guilhermeviegas1993/clean_data/      
       sudo docker cp /home/guilhermeviegas1993/clean_data/. rstudio:/home/rstudio/clean_bucket/
       
@@ -99,6 +106,13 @@ resource "google_compute_instance" "brcomputetfgcpvm" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 }
+
+# resource "google_compute_disk" "brcomputetfgcpdisk" {
+#   name  = "additional-disk"
+#   type  = "pd-ssd"  # Optional: Choose disk type
+#   size  = 200       # Size in GB
+#   zone  = var.zone
+# }
 
 resource "google_service_account" "vm_service_account" {
   account_id   = "${var.svc_name}-serviceaccount"
