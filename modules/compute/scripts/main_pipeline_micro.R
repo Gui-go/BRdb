@@ -14,6 +14,16 @@ source("BRdb/modules/compute/scripts/util_loadPackages.R")
 # source("fct_local.R")
 # source("fct_corMatrix.R")
 
+library(readr)
+df_exports_micro <- readr::read_csv("curated_bucket/df_exports_micro.csv")
+
+
+
+
+
+
+
+
 
 
 
