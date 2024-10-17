@@ -23,7 +23,7 @@ data_loc <- function(
   
   if(use_backup==T){
     
-    # Read back data_locatons_br_ibge.csv data
+    # Read back df_locatons.csv data
     res <- readr::read_csv("clean_bucket/munic/df_locations_mun.csv") %>% 
       suppressMessages()
     
