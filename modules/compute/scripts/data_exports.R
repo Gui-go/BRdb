@@ -16,7 +16,7 @@ data_exports <- function(grouped_by="micro"){
   df_locations <- data_loc()
   
   # Loading exp data
-  exp <- vroom::vroom(file = "clean_bucket/munic/EXP_COMPLETA_MUN.csv") %>% 
+  exp <- vroom::vroom(file = "data/clean_data/munic/EXP_COMPLETA_MUN.csv") %>% 
     janitor::clean_names() %>% 
     dplyr::select(cd_mun=co_mun, year=co_ano, sg_uf=sg_uf_mun, cd_sh4=sh4, exports=vl_fob) %>% 
     dplyr::mutate(
@@ -69,7 +69,7 @@ data_exports <- function(grouped_by="micro"){
   if(grouped_by == "mun"){
     exp_mun_plus %>% 
       dplyr::select(-cd_micro, -nm_micro, -cd_meso, -nm_meso, -cd_uf, -sg_uf, -nm_uf, -cd_reg, -sg_reg, -nm_reg, -cd_rgime, -nm_rgime, -cd_rgint, -nm_rgint) %>% 
-      rio::export(., "curated_bucket/df_exports_mun.csv")
+      rio::export(., "data/curated_data/munic/df_exports_mun.csv")
   }else
     if(grouped_by == "micro"){
       exp_mun_plus %>% 
@@ -80,7 +80,7 @@ data_exports <- function(grouped_by="micro"){
             .fns = sum
           ), .groups = "drop"
         ) %>% 
-        rio::export(., "curated_bucket/df_exports_micro.csv")
+        rio::export(., "data/curated_data/micro/df_exports_micro.csv")
     }else
       if(grouped_by == "meso"){
         exp_mun_plus %>% 
@@ -91,7 +91,7 @@ data_exports <- function(grouped_by="micro"){
               .fns = sum
             ), .groups = "drop"
           ) %>% 
-          rio::export(., "curated_bucket/df_exports_meso.csv")
+          rio::export(., "data/curated_data/meso/df_exports_meso.csv")
       }else
         if(grouped_by == "rgime"){
           exp_mun_plus %>% 
@@ -102,7 +102,7 @@ data_exports <- function(grouped_by="micro"){
                 .fns = sum
               ), .groups = "drop"
             ) %>% 
-            rio::export(., "curated_bucket/df_exports_rgime.csv")
+            rio::export(., "data/curated_data/rgime/df_exports_rgime.csv")
         }else
           if(grouped_by == "rgint"){
             exp_mun_plus %>% 
@@ -113,7 +113,7 @@ data_exports <- function(grouped_by="micro"){
                   .fns = sum
                 ), .groups = "drop"
               ) %>% 
-              rio::export(., "curated_bucket/df_exports_rgint.csv")
+              rio::export(., "data/curated_data/rgint/df_exports_rgint.csv")
           }else
             if(grouped_by == "uf"){
               exp_mun_plus %>% 
@@ -124,7 +124,7 @@ data_exports <- function(grouped_by="micro"){
                     .fns = sum
                   ), .groups = "drop"
                 ) %>% 
-                rio::export(., "curated_bucket/df_exports_uf.csv")
+                rio::export(., "data/curated_data/uf/df_exports_uf.csv")
             }else
               if(grouped_by == "rg"){
                 exp_mun_plus %>% 
@@ -135,7 +135,7 @@ data_exports <- function(grouped_by="micro"){
                       .fns = sum
                     ), .groups = "drop"
                   ) %>% 
-                  rio::export(., "curated_bucket/df_exports_regions.csv")
+                  rio::export(., "data/curated_data/regions/df_exports_regions.csv")
               }
 
   

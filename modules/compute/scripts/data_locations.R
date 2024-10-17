@@ -24,7 +24,7 @@ data_loc <- function(
   if(use_backup==T){
     
     # Read back df_locatons.csv data
-    res <- readr::read_csv("clean_bucket/munic/df_locations_mun.csv") %>% 
+    res <- readr::read_csv("data/clean_data/munic/df_locations_mun.csv") %>% 
       suppressMessages()
     
   } else if(use_backup==F){
@@ -72,7 +72,7 @@ data_loc <- function(
         ) %>% 
         dplyr::select('cd_mun', 'nm_mun', 'cd_meso', 'nm_meso', 'cd_micro', 'nm_micro', 'cd_rgint', 'nm_rgint', 'cd_rgime', 'nm_rgime', 'cd_uf', 'sg_uf', 'nm_uf', 'cd_rg', 'sg_rg', 'nm_rg')
       
-      rio::export(res, "data/backup/data_locatons_br_ibge.csv")
+      rio::export(res, "data/curated_data/munic/df_locations.csv")
       
     } else if(req$status_code != 200){
       warning('Error: Bad request')
@@ -113,7 +113,6 @@ data_loc <- function(
                   dplyr::summarise(.groups = "drop")
               }
   
-  # Return dataset with BR locations
   res <- res %>% 
     dplyr::ungroup() %>% 
     dplyr::mutate(dplyr::across(everything(), as.character))
