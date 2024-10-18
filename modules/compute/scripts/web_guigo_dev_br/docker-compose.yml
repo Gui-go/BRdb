@@ -1,0 +1,12 @@
+version: '3'
+services:
+  service1:
+    image: nginx:latest
+    container_name: nginx-service
+    ports:
+      - "8080:80"  # Nginx listens on port 80 inside the container
+  service2:
+    image: redis:latest
+    container_name: redis-service
+    ports:
+      - "8787:6379"  # Redis listens on port 6379 inside the container

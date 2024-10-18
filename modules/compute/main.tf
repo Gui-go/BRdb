@@ -55,13 +55,21 @@ resource "google_compute_instance" "brcomputetfgcpvm" {
       #!/bin/bash
 
       sudo apt update -y
+      
       sudo apt install tree -y
+      
       sudo apt install -y docker.io
       sudo systemctl start docker
       sudo systemctl enable docker
+      
       sudo curl -L "https://github.com/docker/compose/releases/download/v2.1.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
       sudo chmod +x /usr/local/bin/docker-compose
-      docker-compose --version
+      
+      sudo apt-get install nginx
+      sudo systemctl enable nginx
+      sudo systemctl start nginx
+
+
 
 
       sudo docker pull rocker/geospatial
