@@ -9,6 +9,11 @@ data "google_secret_manager_secret_version" "brcomputetfgcpsecretgitprivsshk" {
   version = "latest"
 }
 
+resource "google_compute_address" "brcomputetfgcpip" {
+  name         = "${var.svc_name}-static-ip"
+  region       = var.location
+}
+
 resource "google_compute_instance" "brcomputetfgcpvm" {
   name         = "computeinstance-${var.svc_name}"
   machine_type = var.machine_type
@@ -29,7 +34,7 @@ resource "google_compute_instance" "brcomputetfgcpvm" {
   network_interface {
     network = var.network_name
     access_config {
-      // Allocate a new IP address
+      nat_ip = google_compute_address.brcomputetfgcpip.address
     }
   }
   dynamic "guest_accelerator" {
@@ -54,6 +59,10 @@ resource "google_compute_instance" "brcomputetfgcpvm" {
       sudo apt install -y docker.io
       sudo systemctl start docker
       sudo systemctl enable docker
+      sudo curl -L "https://github.com/docker/compose/releases/download/v2.1.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      sudo chmod +x /usr/local/bin/docker-compose
+      docker-compose --version
+
 
       sudo docker pull rocker/geospatial
       sudo docker run -d \
@@ -92,11 +101,14 @@ resource "google_compute_instance" "brcomputetfgcpvm" {
 
       '
 
-      mkdir -p /home/guilhermeviegas1993/clean_data
-      sudo chmod -R 777 /home/guilhermeviegas1993/clean_data
-      sudo gsutil -m cp -r gs://${var.cleanbucket_name}/* /home/guilhermeviegas1993/clean_data/      
-      sudo docker cp /home/guilhermeviegas1993/clean_data/. rstudio:/home/rstudio/clean_bucket/
-      
+      mkdir -p /home/guilhermeviegas1993/data/clean_data/{munic,micro,meso,rgint,rgime,uf}
+      mkdir -p /home/guilhermeviegas1993/data/curated_data/{munic,micro,meso,rgint,rgime,uf}
+      sudo chmod -R 777 /home/guilhermeviegas1993/data/
+      sudo gsutil -m cp -r gs://${var.cleanbucket_name}/* /home/guilhermeviegas1993/data/clean_data      
+      sudo docker cp /home/guilhermeviegas1993/data/. rstudio:/home/rstudio/data/
+
+      # sudo gsutil -m cp -r /home/guilhermeviegas1993/data/curated_data gs://brcompute-curatedbucket/*
+
       echo "VM init finished!"
 
     EOF    
@@ -109,10 +121,32 @@ resource "google_compute_instance" "brcomputetfgcpvm" {
 
 # resource "google_compute_disk" "brcomputetfgcpdisk" {
 #   name  = "additional-disk"
-#   type  = "pd-ssd"  # Optional: Choose disk type
-#   size  = 200       # Size in GB
+#   type  = "pd-ssd"
+#   size  = 200
 #   zone  = var.zone
 # }
+
+resource "google_dns_managed_zone" "my_dns_zone" {
+  name        = "${var.svc_name}-dns-zone"
+  dns_name    = "guigo.dev.br."
+  description = "My DNS zone"
+}
+
+resource "google_dns_record_set" "my_a_record" {
+  name         = "guigo.dev.br."
+  managed_zone = google_dns_managed_zone.my_dns_zone.name
+  type         = "A"
+  ttl          = 300
+  rrdatas      = [google_compute_address.brcomputetfgcpip.address]
+}
+
+resource "google_dns_record_set" "my_www_a_record" {
+  name         = "www.guigo.dev.br."
+  managed_zone = google_dns_managed_zone.my_dns_zone.name
+  type         = "A"
+  ttl          = 300
+  rrdatas      = [google_compute_address.brcomputetfgcpip.address]
+}
 
 resource "google_service_account" "vm_service_account" {
   account_id   = "${var.svc_name}-serviceaccount"

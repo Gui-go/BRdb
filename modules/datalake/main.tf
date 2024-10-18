@@ -31,8 +31,8 @@ resource "google_storage_bucket" "tfgcpcleanbucket" {
   }
 }
 
-resource "google_storage_bucket" "tfgcplogbucket" {
-  name          = "${var.proj_name}-logbucket"
+resource "google_storage_bucket" "tfgcpcuratedbucket" {
+  name          = "${var.proj_name}-curatedbucket"
   project       = var.proj_id
   location      = var.location
   storage_class = "STANDARD"
@@ -42,3 +42,16 @@ resource "google_storage_bucket" "tfgcplogbucket" {
     owner       = var.tag_owner
   }
 }
+
+
+# resource "google_storage_bucket" "tfgcplogbucket" {
+#   name          = "${var.proj_name}-logbucket"
+#   project       = var.proj_id
+#   location      = var.location
+#   storage_class = "STANDARD"
+#   labels = {
+#     environment = var.proj_name
+#     project     = var.proj_id
+#     owner       = var.tag_owner
+#   }
+# }

@@ -24,5 +24,25 @@ resource "google_compute_firewall" "brcomputetfgcpfwrstudio" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+resource "google_compute_firewall" "brcomputetfgcphttp" {
+  name    = "${var.proj_name}-http"
+  network = google_compute_network.brcomputetfgcpvpc.name
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "brcomputetfgcphttps" {
+  name    = "${var.proj_name}-https"
+  network = google_compute_network.brcomputetfgcpvpc.name
+  allow {
+    protocol = "tcp"
+    ports    = ["8080"]
+  }
+  source_ranges = ["0.0.0.0/0"]
+}
+
 
 
